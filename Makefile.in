@@ -1,0 +1,127 @@
+# Makefile.in for GNU superoptimizer
+
+MAXCOST = 3
+EXTRA =
+
+DEFS = @DEFS@
+CPPFLAGS = @CPPFLAGS@
+CFLAGS = $(DEFS) $(CPPFLAGS) @CFLAGS@
+LDFLAGS = @LDFLAGS@
+CC = @CC@
+LD = @CC@
+LN_S = @LN_S@
+INSTALL = @INSTALL@
+VERSION = @VERSION@
+ALL_MACHINES = @ALL_MACHINES@
+ALL_RESULTS = @ALL_RESULTS@
+
+@H@ HOST_ARCH = @HOST_ARCH@
+@H@ HOST_TARGET = superopt
+@H@ HOST_SOURCE = superopt-$(HOST_ARCH)
+@H@ HOST_RESULT = $(HOST_ARCH).res
+
+BINDIR	= @bindir@
+OBJS	= superopt.o
+SRCS	= superopt.c
+HDRS	= run_program.def insn.def goal.def superopt.h longlong.h synth.def
+DOCS    = README COPYING TODO ChangeLog 
+CONFIG  = configure configure.in install-sh Makefile.in version.h.in 
+FILES	= $(CONFIG) $(DOCS) $(SRCS) $(HDRS)
+
+
+all: $(ALL_MACHINES) $(HOST_TARGET)
+
+@H@$(HOST_TARGET): $(HOST_SOURCE)
+@H@	$(LN_S) $(HOST_SOURCE) $(HOST_TARGET)
+
+mostlyclean:
+	rm -f *.tmp
+
+clean: mostlyclean
+	rm -f $(OBJS) $(HOST_TARGET) $(ALL_MACHINES)
+
+distclean: clean
+	rm -f $(HOST_RESULT) $(ALL_RESULTS) version.h config.cache \
+		config.log config.status Makefile
+
+install: $(HOST_TARGET)
+	for x in $(ALL_MACHINES); do $(INSTALL) $$x $(BINDIR)/$$x; done
+@H@	$(INSTALL) superopt $(bindir)/superopt
+
+run: all $(ALL_RESULTS)
+@H@	@make superopt.res
+	@echo "Done!"
+
+@H@superopt.res: $(HOST_RESULT)
+@H@	$(LN_S) $(HOST_RESULT) superopt.res
+
+%.res: superopt-%
+	./$< -all $(EXTRA) -max $(MAXCOST) -as 2>&1 | tee $@.tmp 
+	mv $@.tmp $@
+
+sparc.res: superopt-sparc
+power.res: superopt-power
+powerpc.res: superopt-powerpc
+m88000.res: superopt-m88000
+am29k.res: superopt-am29k
+mc68000.res: superopt-mc68000
+mc68020.res: superopt-mc68020
+i386.res: superopt-i386
+i960a.res: superopt-i960a
+i960b.res: superopt-i960b
+pyr.res: superopt-pyr
+alpha.res: superopt-alpha
+sh.res: superopt-sh
+hppa.res: superopt-hppa
+
+superopt-sparc: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DSPARC -o superopt-sparc $(SRCS)
+
+superopt-power: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DPOWER -o superopt-power $(SRCS)
+
+superopt-powerpc: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DPOWERPC -o superopt-powerpc $(SRCS)
+
+superopt-m88000: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DM88000 -o superopt-m88000 $(SRCS)
+
+superopt-am29k: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DAM29K -o superopt-am29k $(SRCS)
+
+superopt-mc68000: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DMC68000 -o superopt-mc68000 $(SRCS)
+
+superopt-mc68020: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DMC68020 -o superopt-mc68020 $(SRCS)
+
+superopt-i386: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DI386 -o superopt-i386 $(SRCS)
+
+superopt-i960a: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DI960 -o superopt-i960a $(SRCS)
+
+superopt-i960b: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DI960B -o superopt-i960b $(SRCS)
+
+superopt-pyr: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DPYR -o superopt-pyr $(SRCS)
+
+superopt-alpha: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DALPHA -o superopt-alpha $(SRCS)
+
+superopt-sh: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DSH -o superopt-sh $(SRCS)
+
+superopt-hppa: $(SRCS) $(HDRS) version.h 
+	$(CC) $(CFLAGS) -DHPPA -o superopt-hppa $(SRCS)
+
+DISTDIR=superopt-$(VERSION)
+
+dist:
+	mkdir $(DISTDIR)
+	ln $(FILES) $(DISTDIR)
+	tar chof - $(DISTDIR) | gzip --best > $(DISTDIR).tar.gz
+	rm -rf $(DISTDIR)
+
+.PHONY: dist install run clean all
