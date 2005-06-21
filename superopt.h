@@ -14,7 +14,8 @@
 
    You should have received a copy of the GNU General Public License along
    with this program; see the file COPYING.  If not, write to the Free
-   Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
+   Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA
+   02110-1301, USA.  */
 
 #if !(defined(SPARC) || defined(POWER) || defined(POWERPC) || defined(M88000) \
       || defined(AM29K) || defined(MC68000) || defined(MC68020) \
