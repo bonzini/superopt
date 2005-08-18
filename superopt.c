@@ -550,7 +550,7 @@ output_assembly(insn_t insn)
 #define	INS_AI		"addic"
 #define	INS_A		"addc"
 #define	INS_AME		"addme"
-#define	INS_AZE		"aze"
+#define	INS_AZE		"addze"
 #define	INS_AE		"adde"
 #define	INS_NEG		"neg"
 #define	INS_SF		"subfc"
