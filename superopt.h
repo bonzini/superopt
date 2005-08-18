@@ -17,59 +17,63 @@
    Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301, USA.  */
 
-#if !(defined(SPARC) || defined(POWER) || defined(POWERPC) || defined(M88000) \
-      || defined(AM29K) || defined(MC68000) || defined(MC68020) \
-      || defined(I386) || defined(PYR) || defined(ALPHA) || defined(HPPA) \
-      || defined(SH) || defined (I960) || defined (I960B))
+#if !(defined(SO_SPARC) || defined(SO_POWER) || defined(SO_POWERPC) \
+      || defined(SO_M88000) || defined(SO_AM29K) || defined(SO_MC68000) \
+      || defined(SO_MC68020) || defined(SO_I386) || defined(SO_PYR) \
+      || defined(SO_ALPHA) || defined(SO_HPPA) \
+      || defined(SO_SH) || defined (SO_I960) || defined (SO_I960B))
 /* If no target instruction set is defined, use host instruction set.  */
-#define SPARC (defined(sparc) || defined(__sparc__))
-#define POWER ((defined(rs6000) || defined(_IBMR2)) && !defined (_ARCH_PPC))
-#define POWERPC (defined(_ARCH_PPC))
-#define M88000 (defined(m88000) || defined(__m88000__))
-#define AM29K (defined(_AM29K) || defined(_AM29000))
-#define MC68020 (defined(m68020) || defined(mc68020))
-#define MC68000 (defined(m68000) || defined(mc68000))
-#define I386 (defined(i386) || defined(i80386) || defined(__i386__))
-#define PYR (defined(pyr) || defined(__pyr__))
-#define ALPHA defined(__alpha)
-#define HPPA defined(__hppa)
-#define SH defined(__sh__)
-#define I960 defined (__i960)
+#define SO_SPARC (defined(sparc) || defined(__sparc__))
+#define SO_POWER ((defined(rs6000) || defined(_IBMR2)) && !defined (_ARCH_PPC) \
+               && !defined (__POWERPC__))
+#define SO_POWERPC (defined(_ARCH_PPC) || defined (__POWERPC__))
+#define SO_M88000 (defined(m88000) || defined(__m88000__))
+#define SO_AM29K (defined(_AM29K) || defined(_AM29000))
+#define SO_MC68020 (defined(m68020) || defined(mc68020))
+#define SO_MC68000 (defined(m68000) || defined(mc68000))
+#define SO_I386 (defined(i386) || defined(i80386) || defined(__i386__))
+#define SO_PYR (defined(pyr) || defined(__pyr__))
+#define SO_ALPHA defined(__alpha)
+#define SO_HPPA defined(__hppa)
+#define SO_SH defined(__sh__)
+#define SO_I960 defined (__i960)
 #endif
 
-#define M68000 (MC68000 || MC68020)
+#define SO_M68000 (MC68000 || MC68020)
 
-#if POWERPC
-#define POWER 1
+#if SO_POWERPC
+#undef SO_POWER
+#define SO_POWER 1
 #endif
 
-#if I960B
-#define I960 1
+#if SO_I960B
+#undef SO_I960
+#define SO_I960 1
 #endif
 
-#if SPARC
+#if SO_SPARC
 #define TARGET_STRING "SPARC v7/v8"
-#elif POWERPC
+#elif SO_POWERPC
 #define TARGET_STRING "PowerPC"
-#elif POWER
+#elif SO_POWER
 #define TARGET_STRING "IBM POWER"
-#elif M88000
+#elif SO_M88000
 #define TARGET_STRING "Motorola MC88000"
-#elif AM29K
+#elif SO_AM29K
 #define TARGET_STRING "Amd 29000"
-#elif MC68020
+#elif SO_MC68020
 #define TARGET_STRING "Motorola MC68020"
-#elif MC68000
+#elif SO_MC68000
 #define TARGET_STRING "Motorola MC68000 (no 68020 instructions)"
-#elif I386
+#elif SO_I386
 #define TARGET_STRING "Intel 386/486/Pentium/Sexium"
-#elif PYR
+#elif SO_PYR
 #define TARGET_STRING "Pyramid (with the secret instructions)"
-#elif ALPHA
+#elif SO_ALPHA
 #define TARGET_STRING "DEC Alpha"
-#elif HPPA
+#elif SO_HPPA
 #define TARGET_STRING "Hewlett-Packard Precision Architecture (PA-RISC)"
-#elif  SH
+#elif SO_SH
 #define TARGET_STRING "Hitachi Super-H (SH)"
 /* Reject sequences that require two different registers to be allocated to
    register r0.  */
@@ -89,24 +93,24 @@
 	}								\
     }									\
 }
-#elif  I960
+#elif SO_I960
 #define TARGET_STRING "Intel 960 v1.0"
-#elif  I960B
+#elif SO_I960B
 #define TARGET_STRING "Intel 960 v1.1"
 #endif
 
-#if !(SPARC || POWER || M88000 || AM29K || M68000 || I386 || PYR \
-      || ALPHA || HPPA || SH || I960)
-#error You have to choose target CPU type (e.g. -DSPARC).
+#if !(SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_M68000 || \
+      SO_I386 || SO_PYR || SO_ALPHA || SO_HPPA || SO_SH || SO_I960)
+#error You have to choose target CPU type (--with-arch).
 #endif
 
-#if MC68000
+#if SO_MC68000
 #define SHIFT_COST(CNT) ((8+2*(CNT)) / 5) /* internal cost */
 #else
 #define SHIFT_COST(CNT) 1
 #endif
 
-#if ALPHA
+#if SO_ALPHA
 #define BITS_PER_WORD 64
 #else
 #define BITS_PER_WORD 32
@@ -125,7 +129,7 @@
 #define LONGLONG_STANDALONE
 #include "longlong.h"
 
-#if HPPA
+#if SO_HPPA
 #define HAS_NULLIFICATION 1
 enum { NOT_NULLIFY = 0, NULLIFY = 1 };
 #endif
@@ -154,7 +158,8 @@ typedef unsigned_word word;
 
 #define TRUNC_CNT(cnt) ((unsigned) (cnt) % BITS_PER_WORD)
 
-#if defined(sparc) || defined(__GNUC__)
+#if defined(__sparc__) || defined(__GNUC__)
+#undef alloca
 #define alloca __builtin_alloca
 #endif
 
@@ -216,7 +221,7 @@ typedef struct
 #if defined(__GNUC__) && defined(USE_ASM)
 /*** Define machine-dependent PERFORM_* here to improve synthesis speed ***/
 
-#if sparc
+#if __sparc__
 #define PERFORM_ADD_CIO(d, co, r1, r2, ci) \
   asm ("subcc %%g0,%4,%%g0	! set cy if CI != 0			\n" \
        "addxcc %2,%3,%0		! add R1 and R2				\n" \
@@ -256,9 +261,9 @@ typedef struct
        : "=&r" (d), "=r" (co)						\
        : "r" (r1), "rI" (r2)						\
        : "cc")
-#endif /* sparc */
+#endif /* __sparc__ */
 
-#if m88k
+#if __m88k__
 #define PERFORM_ADD_CIO(d, co, r1, r2, ci) \
   asm ("or %0,r0,1			\n" \
        "subu.co r0,%4,%0	; set cy if CI != 0			\n" \
@@ -296,7 +301,7 @@ typedef struct
        "addu.ci %1,r0,r0	; set CO to cy"				\
        : "=r" (d), "=r" (co)						\
        : "r" (r1), "Or" (r2))
-#endif /* m88k */
+#endif /* __m88k__ */
 
 #endif /* __GNUC__ && USE_ASM */
 

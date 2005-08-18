@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "superopt.h"
 
@@ -425,68 +426,68 @@ recurse_last(opcode_t opcode,
 #define NAME(op) operand_names[op]
 static char *operand_names[256]=
 {
-#if SPARC
+#if SO_SPARC
   "%i0", "%i1", "%i2", "%i3", "%i4", "%i5", "%i6", "%i7",
-#elif POWER
+#elif SO_POWER
   "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10",
-#elif M88000
+#elif SO_M88000
   "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9",
-#elif AM29K
+#elif SO_AM29K
   "lr2", "lr3", "lr4", "lr5", "lr6", "lr7", "lr8", "lr9",
-#elif M68000
+#elif SO_M68000
   "d0", "d1", "d2", "d3", "d4", "d5", "d6", "d7",
-#elif I386
+#elif SO_I386
   "%eax", "%edx", "%ecx", "%ebx", "%esi", "%edi", "%noooo!", "%crash!!!",
-#elif PYR
+#elif SO_PYR
   "pr0", "pr1", "pr2", "pr3", "pr4", "pr5", "pr6", "pr7",
-#elif ALPHA
+#elif SO_ALPHA
   "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
-#elif HPPA
+#elif SO_HPPA
   "%r26", "%r25", "%r24", "%r23", "%r22", "%r21", "%r20", "%r19",
-#elif SH
+#elif SO_SH
   "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11",
-#elif I960
+#elif SO_I960
   "g0", "g1", "g2", "g3", "g4", "g5", "g6", "g7",
 #else
 #error no register names for this CPU
 #endif
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-#if SPARC
+#if SO_SPARC
   "???%hi(0x7fffffff)","%hi(0x80000000)","-1","%g0","1","2","3","4","5","6",
   "7","8","9","10","11","12","13","14","15","16","17","18","19",
   "20","21","22","23","24","25","26","27","28","29","30","31",
-#elif POWER
+#elif SO_POWER
   "0x7fff","0x8000","-1","0","1","2","3","4","5","6",
   "7","8","9","10","11","12","13","14","15","16","17","18","19",
   "20","21","22","23","24","25","26","27","28","29","30","31",
-#elif M88000
+#elif SO_M88000
   "hi16(0x7fffffff)","hi16(0x80000000)","-1","r0","1","2","3","4","5","6",
   "7","8","9","10","11","12","13","14","15","16","17","18","19",
   "20","21","22","23","24","25","26","27","28","29","30","31",
-#elif AM29K
+#elif SO_AM29K
   "0x7fff","0x8000","-1","0","1","2","3","4","5","6",
   "7","8","9","10","11","12","13","14","15","16","17","18","19",
   "20","21","22","23","24","25","26","27","28","29","30","31",
-#elif M68000 || SH
+#elif SO_M68000 || SO_SH
   "#0x7fffffff","#0x80000000","#-1","#0","#1","#2","#3","#4","#5","#6",
   "#7","#8","#9","#10","#11","#12","#13","#14","#15","#16","#17","#18","#19",
   "#20","#21","#22","#23","#24","#25","#26","#27","#28","#29","#30","#31",
-#elif I386 || PYR
+#elif SO_I386 || SO_PYR
   "$0x7fffffff","$0x80000000","$-1","$0","$1","$2","$3","$4","$5","$6",
   "$7","$8","$9","$10","$11","$12","$13","$14","$15","$16","$17","$18","$19",
   "$20","$21","$22","$23","$24","$25","$26","$27","$28","$29","$30","$31",
-#elif ALPHA
+#elif SO_ALPHA
   "0x7fff","0x8000","-1","$31","1","2","3","4","5","6",
   "7","8","9","10","11","12","13","14","15","16","17","18","19",
   "20","21","22","23","24","25","26","27","28","29","30","31",
   "32","33","34","35","36","37","38","39","40","41","42","43",
   "44","45","46","47","48","49","50","51","52","53","54","55",
   "56","57","58","59","60","61","62","63",
-#elif HPPA
+#elif SO_HPPA
   "0x7fff","0x8000","-1","%r0","1","2","3","4","5","6",
   "7","8","9","10","11","12","13","14","15","16","17","18","19",
   "20","21","22","23","24","25","26","27","28","29","30","31",
-#elif I960
+#elif SO_I960
   "0x7fffffff","0x80000000","-1","0","1","2","3","4","5","6",
   "7","8","9","10","11","12","13","14","15","16","17","18","19",
   "20","21","22","23","24","25","26","27","28","29","30","31",
@@ -509,7 +510,7 @@ output_assembly(insn_t insn)
   printf("\t");
   switch (insn.opcode)
     {
-#if SPARC
+#if SO_SPARC
     case COPY:
       if (IMMEDIATE_P(s1) && (IMMEDIATE_VAL(s1) & 0x1fff) == 0)
 	printf("sethi	%s,%s",NAME(s1),NAME(d));
@@ -538,8 +539,8 @@ output_assembly(insn_t insn)
     case LSHIFTR:printf("srl	%s,%s,%s",NAME(s1),NAME(s2),NAME(d));break;
     case ASHIFTR:printf("sra	%s,%s,%s",NAME(s1),NAME(s2),NAME(d));break;
     case SHIFTL:printf("sll	%s,%s,%s",NAME(s1),NAME(s2),NAME(d));break;
-#elif POWER
-#ifdef POWERPC			/* redefine the PowerPC names */
+#elif SO_POWER
+#ifdef SO_POWERPC			/* redefine the PowerPC names */
 #define INS_LIL		"li"
 #define INS_LIU		"li"
 #define INS_ORIL	"ori"
@@ -632,7 +633,7 @@ output_assembly(insn_t insn)
 #define	INS_NABS	"nabs"
 #define	INS_DOZI	"dozi"
 #define	INS_DOZ		"doz"
-#endif /* POWER */
+#endif /* SO_POWER */
 
     case COPY:
       if (IMMEDIATE_P(s1))
@@ -787,7 +788,7 @@ output_assembly(insn_t insn)
       break;
     case CLZ:
       printf("%s\t%s,%s",INS_CNTLZ,NAME(d),NAME(s1));break;
-#elif M88000
+#elif SO_M88000
     case COPY:
       if (IMMEDIATE_P(s1))
 	{
@@ -914,7 +915,7 @@ output_assembly(insn_t insn)
     case MUL:
       printf("mul	%s,%s,%s",NAME(d),NAME(s1),NAME(s2));
       break;
-#elif AM29K
+#elif SO_AM29K
     case COPY:
       if (IMMEDIATE_P(s1))
 	{
@@ -973,7 +974,7 @@ output_assembly(insn_t insn)
       break;
     case CLZ:
       printf("clz	%s,%s",NAME(d),NAME(s1));break;
-#elif M68000
+#elif SO_M68000
     case COPY:
       if (IMMEDIATE_P(s1))
 	{
@@ -1051,7 +1052,7 @@ output_assembly(insn_t insn)
       printf("roxrl	%s,%s",NAME(s2),NAME(d));break;
     case MUL:
       printf("mulsl	%s,%s",NAME(s2),NAME(d));break;
-#elif I386
+#elif SO_I386
     case COPY:
       printf("movl	%s,%s",NAME(s1),NAME(d));break;
     case BSF86:
@@ -1124,7 +1125,7 @@ output_assembly(insn_t insn)
       printf("cmc");break;
     case MUL:
       printf("imull	%s,%s",NAME(s2),NAME(d));break;
-#elif PYR
+#elif SO_PYR
     case COPY:
       printf("movw	%s,%s",NAME(s1),NAME(d));break;
     case EXCHANGE:
@@ -1164,7 +1165,7 @@ output_assembly(insn_t insn)
       printf("rotrw	%s,%s",NAME(s2),NAME(d));break;
     case MUL:
       printf("mulw	%s,%s",NAME(s2),NAME(d));break;
-#elif ALPHA
+#elif SO_ALPHA
     case COPY:
       if (IMMEDIATE_P(s1))
 	printf("lda	%s,%s",NAME(d),NAME(s1)); /* yes, reversed op order */
@@ -1204,7 +1205,7 @@ output_assembly(insn_t insn)
     case CMOVGE:printf("cmovge	%s,%s,%s",NAME(s1),NAME(s2),NAME(d));break;
     case CMOVLE:printf("cmovle	%s,%s,%s",NAME(s1),NAME(s2),NAME(d));break;
     case CMOVGT:printf("cmovgt	%s,%s,%s",NAME(s1),NAME(s2),NAME(d));break;
-#elif HPPA
+#elif SO_HPPA
     case ADD_CIO:
       if (IMMEDIATE_P(s2) && IMMEDIATE_VAL(s2) == -1)
 	printf("subb		%s,%%r0,%s",NAME(s1),NAME(d));
@@ -2117,7 +2118,7 @@ output_assembly(insn_t insn)
       else
 	printf("addl,tr		%s,%%r0,%s",NAME(s1),NAME(d));
       break;
-#elif SH
+#elif SO_SH
     case COPY:
       printf("mov	%s,%s",NAME(s1),NAME(d));break;
     case ADD:
@@ -2260,7 +2261,7 @@ output_assembly(insn_t insn)
       printf("exts.w	%s,%s",NAME(s1),NAME(d));break;
     case DECR_CYEQ:
       printf("dt	%s",NAME(d));break;
-#elif I960
+#elif SO_I960
     case ADD:
       if (IMMEDIATE_P(s2) && (signed_word) IMMEDIATE_VAL(s2) < 0)
 	printf("subo	%d,%s,%s",-IMMEDIATE_VAL(s2),NAME(s1),NAME(d));
@@ -2713,7 +2714,7 @@ main_synth(int maxmax_cost, int allowed_extra_cost)
   switch (goal_function)
     {
     case FFS:
-#if M88000
+#if SO_M88000
       /* Best ffs starting place.  */
       sequence[ii++] = (insn_t) { ADC_CO, CNST(0), 0, 1 };
       sequence[ii++] = (insn_t) { AND, 0, 1, 2 };
@@ -2721,7 +2722,7 @@ main_synth(int maxmax_cost, int allowed_extra_cost)
       break;
 
     case ZDEPI_FOR_MOVSI:
-#if SPARC
+#if SO_SPARC
       sequence[ii++] = (insn_t) { SUB, CNST(0), 0, 1 };
       sequence[ii++] = (insn_t) { AND, 0, 1, 2 };
 #endif

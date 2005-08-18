@@ -92,8 +92,8 @@ AC_ARG_WITH(arch,
   HOST_ARCH=
   for i in $all_hosts; do
     AC_EGREP_CPP(got-the-host, [
-      #include "superopt.h"
-      #if $i
+      #include "$srcdir/superopt.h"
+      #if SO_$i
       got-the-host
       #endif
     ], [
@@ -102,7 +102,7 @@ AC_ARG_WITH(arch,
     ])
   done
   if test -z "$HOST_ARCH"; then
-    AC_MSG_ERROR(Host instruction set not supported, use --with-arch)
+    AC_MSG_ERROR([Host instruction set not supported, use --with-arch])
   fi
   with_arch=$HOST_ARCH
 ])

@@ -1,11 +1,15 @@
 # Makefile.in for GNU superoptimizer
 
+srcdir = @srcdir@
+VPATH = @srcdir@
+
 MAXCOST = 3
 EXTRA =
 
 DEFS = @DEFS@
 CPPFLAGS = @CPPFLAGS@
-CFLAGS = $(DEFS) $(CPPFLAGS) @CFLAGS@
+CFLAGS = @CFLAGS@
+ALL_CFLAGS = $(DEFS) -I. -I$(srcdir) $(CPPFLAGS) $(CFLAGS)
 LDFLAGS = @LDFLAGS@
 CC = @CC@
 LD = @CC@
@@ -22,7 +26,7 @@ ALL_RESULTS = @ALL_RESULTS@
 
 BINDIR	= @bindir@
 OBJS	= superopt.o
-SRCS	= superopt.c
+SRCS	= $(srcdir)/superopt.c
 HDRS	= run_program.def insn.def goal.def superopt.h longlong.h synth.def
 DOCS    = README COPYING TODO ChangeLog 
 CONFIG  = configure configure.in install-sh Makefile.in version.h.in 
@@ -75,46 +79,46 @@ sh.res: superopt-sh
 hppa.res: superopt-hppa
 
 superopt-sparc: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DSPARC -o superopt-sparc $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_SPARC -o superopt-sparc $(SRCS)
 
 superopt-power: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DPOWER -o superopt-power $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_POWER -o superopt-power $(SRCS)
 
 superopt-powerpc: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DPOWERPC -o superopt-powerpc $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_POWERPC -o superopt-powerpc $(SRCS)
 
 superopt-m88000: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DM88000 -o superopt-m88000 $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_M88000 -o superopt-m88000 $(SRCS)
 
 superopt-am29k: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DAM29K -o superopt-am29k $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_AM29K -o superopt-am29k $(SRCS)
 
 superopt-mc68000: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DMC68000 -o superopt-mc68000 $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_MC68000 -o superopt-mc68000 $(SRCS)
 
 superopt-mc68020: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DMC68020 -o superopt-mc68020 $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_MC68020 -o superopt-mc68020 $(SRCS)
 
 superopt-i386: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DI386 -o superopt-i386 $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_I386 -o superopt-i386 $(SRCS)
 
 superopt-i960a: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DI960 -o superopt-i960a $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_I960 -o superopt-i960a $(SRCS)
 
 superopt-i960b: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DI960B -o superopt-i960b $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_I960B -o superopt-i960b $(SRCS)
 
 superopt-pyr: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DPYR -o superopt-pyr $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_PYR -o superopt-pyr $(SRCS)
 
 superopt-alpha: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DALPHA -o superopt-alpha $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_ALPHA -o superopt-alpha $(SRCS)
 
 superopt-sh: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DSH -o superopt-sh $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_SH -o superopt-sh $(SRCS)
 
 superopt-hppa: $(SRCS) $(HDRS) version.h 
-	$(CC) $(CFLAGS) -DHPPA -o superopt-hppa $(SRCS)
+	$(CC) $(ALL_CFLAGS) -DSO_HPPA -o superopt-hppa $(SRCS)
 
 DISTDIR=superopt-$(VERSION)
 

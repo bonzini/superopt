@@ -22,7 +22,7 @@
 
    PRUNE_HINT contains flags to assist pruning of the search tree.  */
 
-#if SPARC || POWER || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_ALPHA
 void
 MAKENAME(synth) (insn_t *sequence,
 		 int n_insns,
@@ -69,7 +69,7 @@ MAKENAME(synth) (insn_t *sequence,
 		    continue;
 		}
 
-#if SPARC || POWER || M88000 || AM29K
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K
 	      /* sparc:		addxcc
 		 rs6000:	ae
 		 m88000:	addu.cio
@@ -77,27 +77,27 @@ MAKENAME(synth) (insn_t *sequence,
 	      PERFORM_ADD_CIO(v, co, r1, r2, ci);
 	      RECURSE(ADD_CIO, s1, s2, CY_JUST_SET);
 #endif
-#if SPARC || M88000
+#if SO_SPARC || SO_M88000
 	      /* sparc:		addx
 		 m88000:	addu.ci */
 	      PERFORM_ADD_CI(v, co, r1, r2, ci);
 	      RECURSE(ADD_CI, s1, s2, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC
+#if SO_SPARC
 	      /* sparc:		subxcc */
 	      PERFORM_SUB_CIO(v, co, r1, r2, ci);
 	      RECURSE(SUB_CIO, s1, s2, CY_JUST_SET);
 	      PERFORM_SUB_CIO(v, co, r2, r1, ci);
 	      RECURSE(SUB_CIO, s2, s1, CY_JUST_SET);
 #endif
-#if SPARC
+#if SO_SPARC
 	      /* sparc:		subx */
 	      PERFORM_SUB_CI(v, co, r1, r2, ci);
 	      RECURSE(SUB_CI, s1, s2, prune_hint & ~CY_JUST_SET);
 	      PERFORM_SUB_CI(v, co, r2, r1, ci);
 	      RECURSE(SUB_CI, s2, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || M88000 || AM29K
+#if SO_POWER || SO_M88000 || SO_AM29K
 	      /* rs6000:	sfe
 		 m88000:	subu.cio
 		 am29k:		subc */
@@ -106,7 +106,7 @@ MAKENAME(synth) (insn_t *sequence,
 	      PERFORM_ADC_CIO(v, co, r2, r1, ci);
 	      RECURSE(ADC_CIO, s2, s1, CY_JUST_SET);
 #endif
-#if M88000
+#if SO_M88000
 	      /* m88000:	subu.ci */
 	      PERFORM_ADC_CI(v, co, r1, r2, ci);
 	      RECURSE(ADC_CI, s1, s2, prune_hint & ~CY_JUST_SET);
@@ -139,7 +139,7 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_UMULWIDEN_HI(v, co, r1, r2, ci);
 	  RECURSE(UMULWIDEN_HI, s1, s2, prune_hint & ~CY_JUST_SET);
 #endif
-#if defined (DM) || defined (MM)
+#if defined (SO_DM) || defined (SO_MM)
 	  PERFORM_MUL(v, co, r1, r2, ci);
 	  RECURSE(MUL, s1, s2, prune_hint & ~CY_JUST_SET);
 #endif
@@ -147,7 +147,7 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_SDIV (v, co, r1, r2, ci);
 	  RECURSE(SDIV, s1, s2, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K
 	  /* sparc:	addcc
 	     rs6000:	a
 	     m88000:	addu.co
@@ -155,7 +155,7 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_ADD_CO(v, co, r1, r2, ci);
 	  RECURSE(ADD_CO, s1, s2, CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_ALPHA
 	  /* sparc:	add
 	     rs6000:	cax
 	     m88000:	addu
@@ -163,14 +163,14 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_ADD(v, co, r1, r2, ci);
 	  RECURSE(ADD, s1, s2, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC
+#if SO_SPARC
 	  /* sparc:	subcc */
 	  PERFORM_SUB_CO(v, co, r1, r2, ci);
 	  RECURSE(SUB_CO, s1, s2, CY_JUST_SET);
 	  PERFORM_SUB_CO(v, co, r2, r1, ci);
 	  RECURSE(SUB_CO, s2, s1, CY_JUST_SET);
 #endif
-#if SPARC || POWERPC || M88000 || ALPHA
+#if SO_SPARC || SO_POWERPC || SO_M88000 || SO_ALPHA
 	  /* sparc:	sub
 	     powerpc:	subf
 	     m88000:	subu
@@ -180,7 +180,7 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_SUB(v, co, r2, r1, ci);
 	  RECURSE(SUB, s2, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || M88000 || AM29K
+#if SO_POWER || SO_M88000 || SO_AM29K
 	  /* rs6000:	sf
 	     m88000:	subu.co
 	     am29k:	sub */
@@ -189,7 +189,7 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_ADC_CO(v, co, r2, r1, ci);
 	  RECURSE(ADC_CO, s2, s1, CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_ALPHA
 	  PERFORM_AND(v, co, r1, r2, ci);
 	  RECURSE(AND, s1, s2, prune_hint & ~CY_JUST_SET);
 
@@ -204,30 +204,30 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_ANDC(v, co, r2, r1, ci);
 	  RECURSE(ANDC, s2, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_ALPHA
 	  PERFORM_IORC(v, co, r1, r2, ci);
 	  RECURSE(IORC, s1, s2, prune_hint & ~CY_JUST_SET);
 	  PERFORM_IORC(v, co, r2, r1, ci);
 	  RECURSE(IORC, s2, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_ALPHA
 	  PERFORM_EQV(v, co, r1, r2, ci);
 	  RECURSE(EQV, s1, s2, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || AM29K
+#if SO_POWER || SO_AM29K
 	  PERFORM_NAND(v, co, r1, r2, ci);
 	  RECURSE(NAND, s1, s2, prune_hint & ~CY_JUST_SET);
 
 	  PERFORM_NOR(v, co, r1, r2, ci);
 	  RECURSE(NOR, s1, s2, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER && !defined (POWERPC)
+#if SO_POWER && !defined (SO_POWERPC)
 	  PERFORM_DOZ(v, co, r1, r2, ci);
 	  RECURSE(DOZ, s1, s2, prune_hint & ~CY_JUST_SET);
 	  PERFORM_DOZ(v, co, r2, r1, ci);
 	  RECURSE(DOZ, s2, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if AM29K
+#if SO_AM29K
 	  PERFORM_CPEQ(v, co, r1, r2, ci);
 	  RECURSE(CPEQ, s1, s2, prune_hint & ~CY_JUST_SET);
 	  PERFORM_CPGE(v, co, r1, r2, ci);
@@ -249,7 +249,7 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_CPNEQ(v, co, r1, r2, ci);
 	  RECURSE(CPNEQ, s1, s2, prune_hint & ~CY_JUST_SET);
 #endif
-#if ALPHA
+#if SO_ALPHA
 	  PERFORM_CMPEQ(v, co, r1, r2, ci);
 	  RECURSE(CMPEQ, s1, s2, prune_hint & ~CY_JUST_SET);
 
@@ -273,13 +273,13 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_CMPLTU(v, co, r2, r1, ci);
 	  RECURSE(CMPLTU, s2, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if M88000
+#if SO_M88000
 	  PERFORM_CMPPAR (v, co, r1, r2, ci);
 	  RECURSE(CMPPAR, s1, s2, prune_hint & ~CY_JUST_SET);
 	  PERFORM_CMPPAR (v, co, r2, r1, ci);
 	  RECURSE(CMPPAR, s2, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || POWER || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_AM29K || SO_ALPHA
 	  /* ??? Does POWER really have shifts that truncate the count?  */
 	  /* ??? Should add these to other synth variants!! */
 	  PERFORM_SHIFTL (v, co, r1, r2, ci);
@@ -292,13 +292,13 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_LSHIFTR (v, co, r2, r1, ci);
 	  RECURSE(LSHIFTR, s2, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || AM29K || ALPHA
+#if SO_SPARC || SO_AM29K || SO_ALPHA
 	  PERFORM_ASHIFTR (v, co, r1, r2, ci);
 	  RECURSE(ASHIFTR, s1, s2, prune_hint & ~CY_JUST_SET);
 	  PERFORM_ASHIFTR (v, co, r2, r1, ci);
 	  RECURSE(ASHIFTR, s2, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER
+#if SO_POWER
 	  PERFORM_ASHIFTR_CON (v, co, r1, r2, ci);
 	  RECURSE(ASHIFTR_CON, s1, s2, CY_JUST_SET);
 	  PERFORM_ASHIFTR_CON (v, co, r2, r1, ci);
@@ -325,7 +325,7 @@ MAKENAME(synth) (insn_t *sequence,
 		continue;
 	    }
 
-#if SPARC || POWER || M88000 || AM29K
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K
 	  /* d,cy = 2*r1 + cy
 	     sparc:	addxcc	s1,s1,d
 	     rs6000:	ae	d,s1,s1
@@ -334,14 +334,14 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_ADD_CIO(v, co, r1, r1, ci);
 	  RECURSE(ADD_CIO, s1, s1, CY_JUST_SET);
 #endif
-#if SPARC || M88000
+#if SO_SPARC || SO_M88000
 	  /* d = 2*r1 + cy
 	     sparc:	addx	s1,s1,d
 	     m88000:	addu.ci	d,s1,s1  */
 	  PERFORM_ADD_CI(v, co, r1, r1, ci);
 	  RECURSE(ADD_CI, s1, s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K
 	  /* d,cy = r1 + cy - 1
 	     sparc:	addxcc	s1,-1,d
 	     rs6000:	ame	d,s1
@@ -350,7 +350,7 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_ADD_CIO(v, co, r1, VALUE(-1), ci);
 	  RECURSE(ADD_CIO, s1, CNST(-1), CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K
 	  /* d,cy = r1 + cy
 	     sparc:	addxcc	s1,0,d
 	     rs6000:	aze	d,s1
@@ -359,31 +359,31 @@ MAKENAME(synth) (insn_t *sequence,
 	  PERFORM_ADD_CIO(v, co, r1, VALUE(0), ci);
 	  RECURSE(ADD_CIO, s1, CNST(0), CY_JUST_SET);
 #endif
-#if SPARC
+#if SO_SPARC
 	  /* d,cy = 0 - r1 - cy
 	     sparc:	subxcc	%g0,s1,d */
 	  PERFORM_SUB_CIO(v, co, VALUE(0), r1, ci);
 	  RECURSE(SUB_CIO, CNST(0), s1, CY_JUST_SET);
 #endif
-#if SPARC
+#if SO_SPARC
 	  /* d = r1 + 1 - cy
 	     sparc:	subx	s1,-1,d */
 	  PERFORM_SUB_CI(v, co, r1, VALUE(-1), ci);
 	  RECURSE(SUB_CI, s1, CNST(-1), prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC
+#if SO_SPARC
 	  /* d,cy = r1 + 1 - cy
 	     sparc:	subxcc	s1,-1,d */
 	  PERFORM_SUB_CIO(v, co, r1, VALUE(-1), ci);
 	  RECURSE(SUB_CIO, s1, CNST(-1), CY_JUST_SET);
 #endif
-#if POWER
+#if SO_POWER
 	  /* d,cy = -1 + ~r1 + cy
 	     rs6000:	sfme	d,s1 */
 	  PERFORM_ADC_CIO(v, co, VALUE(-1), r1, ci);
 	  RECURSE(ADC_CIO, CNST(-1), s1, CY_JUST_SET);
 #endif
-#if POWER || M88000 || AM29K
+#if SO_POWER || SO_M88000 || SO_AM29K
 	  /* d,cy = ~r1 + cy
 	     m88000:	subu.cio d,r0,s1
 	     rs6000:	sfze	d,s1
@@ -416,7 +416,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_INVMOD(v, co, r1, ci);
       RECURSE(INVMOD, s1, 0, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K
       /* d,cy = 2*r1
 	 sparc:		addcc	s1,s1,d
 	 rs6000:	a	d,s1,s1
@@ -425,7 +425,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_ADD_CO(v, co, r1, r1, ci);
       RECURSE(ADD_CO, s1, s1, CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_ALPHA
       /* d = r1 & 1
 	 sparc:		and	s1,1,d
 	 rs6000:	rlinm	d,s1,0,31,31
@@ -435,7 +435,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_AND(v, co, r1, VALUE(1), ci);
       RECURSE(AND, s1, CNST(1), prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || M88000
+#if SO_POWER || SO_M88000
       /* d = r1 & 0x80000000
 	 rs6000:	rlinm	d,s1,0,0,0
 	 m88000:	mask.u	d,s1,0x8000 */
@@ -448,14 +448,14 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_AND(v, co, r1, VALUE_MAX_SIGNED, ci);
       RECURSE(AND, s1, CNST_0x7FFFFFFF, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || M88000
+#if SO_POWER || SO_M88000
       PERFORM_XOR(v, co, r1, VALUE_MIN_SIGNED, ci);
       RECURSE(XOR, s1, CNST_0x80000000, prune_hint & ~CY_JUST_SET);
 
       PERFORM_IOR(v, co, r1, VALUE_MIN_SIGNED, ci);
       RECURSE(IOR, s1, CNST_0x80000000, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_ALPHA
       /* d = r1 ^ 1
 	 sparc:		xor	s1,1,d
 	 rs6000:	xoril	d,s1,1
@@ -465,7 +465,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_XOR(v, co, r1, VALUE(1), ci);
       RECURSE(XOR, s1, CNST(1), prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_ALPHA
       /* d = ~r1
 	 sparc:		xnor	%g0,s1,d
 	 rs6000:	nand	d,s1,s1
@@ -475,13 +475,13 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_SUB(v, co, VALUE(-1), r1, ci);
       RECURSE(SUB, CNST(-1), s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER
+#if SO_POWER
       /* d,cy = -1 + ~r1 + 1 (i.e. one's complement and set carry.)
 	 rs6000:	sfi	d,s1,-1 */
       PERFORM_ADC_CO(v, co, VALUE(-1), r1, ci);
       RECURSE(ADC_CO, CNST(-1), s1, CY_JUST_SET | CY_1);
 #endif
-#if SPARC || POWER || AM29K
+#if SO_SPARC || SO_POWER || SO_AM29K
       /* d,cy = r1 + 1
 	 sparc:		addcc	s1,1,d
 	 rs6000:	ai	d,s1,1
@@ -489,7 +489,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_ADD_CO(v, co, r1, VALUE(1), ci);
       RECURSE(ADD_CO, s1, CNST(1), CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_ALPHA
       /* d = r1 + 1
 	 sparc:		add	s1,1,d
 	 rs6000:	cal	d,1(s1)
@@ -498,13 +498,13 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_ADD(v, co, r1, VALUE(1), ci);
       RECURSE(ADD, s1, CNST(1), prune_hint & ~CY_JUST_SET);
 #endif
-#if 0 && POWER /* This has the same effect as a "xoriu". */
+#if 0 && SO_POWER /* SO_This has the same effect as a "xoriu". */
       /* d = r1 + 0x80000000
 	 rs6000:	cau	d,s1,0x8000 */
       PERFORM_ADD(v, co, r1, VALUE_MIN_SIGNED, ci);
       RECURSE(ADD, s1, CNST_0x80000000, CY_JUST_SET);
 #endif
-#if SPARC || POWER || AM29K /* not M88000 */
+#if SO_SPARC || SO_POWER || SO_AM29K /* not SO_M88000 */
       /* d,cy = r1 + -1
 	 sparc:		addcc	s1,-1,d
 	 rs6000:	ai	d,s1,-1
@@ -512,7 +512,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_ADD_CO(v, co, r1, VALUE(-1), ci);
       RECURSE(ADD_CO, s1, CNST(-1), CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_ALPHA
       /* d = r1 + -1
 	 sparc:		sub	s1,1,d
 	 rs6000:	cal	d,-1(s1)
@@ -521,19 +521,19 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_ADD(v, co, r1, VALUE(-1), ci);
       RECURSE(ADD, s1, CNST(-1), prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC
+#if SO_SPARC
       /* d,cy = r1 - 1. [This isn't redundant, in spite we add -1 above.]
 	 sparc:		subcc	s1,1,d */
       PERFORM_SUB_CO(v, co, r1, VALUE(1), ci);
       RECURSE(SUB_CO, s1, CNST(1), CY_JUST_SET);
 #endif
-#if SPARC
+#if SO_SPARC
       /* d,cy = -r1
 	 sparc:		subcc	%g0,s1,d */
       PERFORM_SUB_CO(v, co, VALUE(0), r1, ci);
       RECURSE(SUB_CO, CNST(0), s1, CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_ALPHA
       /* d = -r1
 	 sparc:		sub	%g0,s1,d
 	 rs6000:	neg	d,s1
@@ -542,7 +542,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_SUB(v, co, VALUE(0), r1, ci);
       RECURSE(SUB, CNST(0), s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || M88000 || AM29K
+#if SO_POWER || SO_M88000 || SO_AM29K
       /* d,cy = -r1
 	 rs6000:	sf	d,s1,0
 	 m88000:	subu.co	d,r0,s1
@@ -550,7 +550,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_ADC_CO(v, co, VALUE(0), r1, ci);
       RECURSE(ADC_CO, CNST(0), s1, CY_JUST_SET);
 #endif
-#if POWER && !defined (POWERPC)
+#if SO_POWER && !defined (SO_POWERPC)
       /* d = abs(r1)
 	 rs6000:	abs	d,s1 */
       PERFORM_ABSVAL(v, co, r1, ci);
@@ -561,7 +561,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_NABSVAL(v, co, r1, ci);
       RECURSE(NABSVAL, s1, 0, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER && !defined (POWERPC)
+#if SO_POWER && !defined (SO_POWERPC)
       PERFORM_DOZ(v, co, VALUE(0), r1, ci);
       RECURSE(DOZ, CNST(0), s1, prune_hint & ~CY_JUST_SET);
       PERFORM_DOZ(v, co, VALUE(-1), r1, ci);
@@ -571,30 +571,30 @@ MAKENAME(synth) (insn_t *sequence,
 	int cnt;
 	for (cnt = 1; cnt < BITS_PER_WORD; cnt += (flag_shifts ? 1 : BITS_PER_WORD - 2))
 	  {
-#if SPARC || POWER || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_ALPHA
 	    PERFORM_LSHIFTR(v, co, r1, VALUE(cnt), ci);
 	    RECURSE(LSHIFTR, s1, CNST(cnt), prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_M88000 || SO_AM29K || SO_ALPHA
 	    PERFORM_ASHIFTR(v, co, r1, VALUE(cnt), ci);
 	    RECURSE(ASHIFTR, s1, CNST(cnt), prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER
+#if SO_POWER
 	    PERFORM_ASHIFTR_CON(v, co, r1, VALUE(cnt), ci);
 	    RECURSE(ASHIFTR_CON, s1, CNST(cnt), CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_ALPHA
 	    PERFORM_SHIFTL(v, co, r1, VALUE(cnt), ci);
 	    RECURSE(SHIFTL, s1, CNST(cnt), prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || M88000
+#if SO_POWER || SO_M88000
 	    PERFORM_ROTATEL(v, co, r1, VALUE(cnt), ci);
 	    RECURSE(ROTATEL, s1, CNST(cnt), prune_hint & ~CY_JUST_SET);
 #endif
 	  }
       }
 
-#if M88000
+#if SO_M88000
       if (flag_extracts)
 	{
 	  int cnt;
@@ -618,7 +618,7 @@ MAKENAME(synth) (insn_t *sequence,
 	    }
 	}
 #endif
-#if AM29K
+#if SO_AM29K
       PERFORM_CPEQ(v, co, r1, VALUE(0), ci);
       RECURSE(CPEQ, s1, CNST(0), prune_hint & ~CY_JUST_SET);
       PERFORM_CPGE(v, co, r1, VALUE(0), ci);
@@ -640,7 +640,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_CPNEQ(v, co, r1, VALUE(0), ci);
       RECURSE(CPNEQ, s1, CNST(0), prune_hint & ~CY_JUST_SET);
 #endif
-#if ALPHA
+#if SO_ALPHA
       PERFORM_CMPEQ(v, co, r1, VALUE(0), ci);
       RECURSE(CMPEQ, s1, CNST(0), prune_hint & ~CY_JUST_SET);
 
@@ -664,21 +664,21 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_CMPLTU(v, co, VALUE(0), r1, ci);
       RECURSE(CMPLTU, CNST(0), s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || AM29K
+#if SO_POWER || SO_AM29K
       PERFORM_CLZ(v, co, r1, ci);
       RECURSE(CLZ, s1, 0, prune_hint & ~CY_JUST_SET);
 #endif
-#if M88000
+#if SO_M88000
       PERFORM_FF1(v, co, r1, ci);
       RECURSE(FF1, s1, 0, prune_hint & ~CY_JUST_SET);
 #endif
-#if M88000
+#if SO_M88000
       PERFORM_CMPPAR (v, co, r1, VALUE(0), ci);
       RECURSE(CMPPAR, s1, CNST(0), prune_hint & ~CY_JUST_SET);
       PERFORM_CMPPAR (v, co, VALUE(0), r1, ci);
       RECURSE(CMPPAR, CNST(0), s1, prune_hint & ~CY_JUST_SET);
 #endif
-#if ALPHA	/* Copy register->register because of cmov.  */
+#if SO_ALPHA	/* SO_Copy register->register because of cmov.  */
       /* d = r1
 	 alpha:		bis	r1,r1,d */
       PERFORM_COPY(v, co, r1, ci);
@@ -686,7 +686,7 @@ MAKENAME(synth) (insn_t *sequence,
 #endif
     }
 
-#if ALPHA
+#if SO_ALPHA
   /* Alpha conditional move instructions need special treatment.  We let all
      other instructions assign the next higher-numbered register, but we
      can't do that here since cmov insns leave the register unchanged if the
@@ -827,21 +827,21 @@ MAKENAME(synth) (insn_t *sequence,
     {
       /* We don't do "0 - 1 - cy" or "0 + 1 + cy" here.  It would
 	 probably give very few new sequences. */
-#if SPARC || M88000
+#if SO_SPARC || SO_M88000
       /* d = cy.
 	 sparc:		addx	%g0,0,d
 	 m88000:	addu.ci d,r0,r0 */
       PERFORM_ADD_CI(v, co, VALUE(0), VALUE(0), ci);
       RECURSE(ADD_CI, CNST(0), CNST(0), prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || M88000
+#if SO_SPARC || SO_M88000
       /* d = cy, cy = 0.
 	 sparc:		addxcc	%g0,0,d
 	 m88000:	addu.cio d,r0,r0 */
       PERFORM_ADD_CIO(v, co, VALUE(0), VALUE(0), ci);
       RECURSE(ADD_CIO, CNST(0), CNST(0), CY_JUST_SET | CY_0);
 #endif
-#if SPARC
+#if SO_SPARC
       /* Using SUB_CIO instead would make no difference.
 	 It'd just set carry to it's old value.  */
       /* d = -cy.
@@ -849,19 +849,19 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_SUB_CI(v, co, VALUE(0), VALUE(0), ci);
       RECURSE(SUB_CI, CNST(0), CNST(0), prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC
+#if SO_SPARC
       /* d = 1 - cy.
 	 sparc:		subx	%g0,-1,d */
       PERFORM_SUB_CI(v, co, VALUE(0), VALUE(-1), ci);
       RECURSE(SUB_CI, CNST(0), CNST(-1), CY_JUST_SET | CY_1);
 #endif
-#if SPARC
+#if SO_SPARC
       /* d = 1 - cy, cy = 1.
 	 sparc:		subxcc	%g0,-1,d */
       PERFORM_SUB_CIO(v, co, VALUE(0), VALUE(-1), ci);
       RECURSE(SUB_CIO, CNST(0), CNST(-1), CY_JUST_SET | CY_1);
 #endif
-#if SPARC
+#if SO_SPARC
       /* Using ADD_CIO instead would make no difference.
 	 It'd just set carry to it's old value.  */
       /* d = -1 + cy.
@@ -869,14 +869,14 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_ADD_CI(v, co, VALUE(0), VALUE(-1), ci);
       RECURSE(ADD_CI, CNST(0), CNST(-1), prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || AM29K /* Use subu.ci on 88k instead with same result */
+#if SO_POWER || SO_AM29K /* SO_Use subu.ci on 88k instead with same result */
       /* d = -1 + cy, cy = cy
 	 rs6000:	sfe	d,d,d
 	 am29k:		subc	d,d,d */
       PERFORM_ADC_CIO(v, co, VALUE(0), VALUE(0), ci);
       RECURSE(ADC_CIO, n_values, n_values, prune_hint & ~CY_JUST_SET);
 #endif
-#if M88000
+#if SO_M88000
       /* d = -1 + cy
 	 m88000:	subu.ci	d,r0,r0 */
       PERFORM_ADC_CI(v, co, VALUE(0), VALUE(0), ci);
@@ -888,7 +888,7 @@ MAKENAME(synth) (insn_t *sequence,
      Don't do this if we are just permitted to do one more instruction.  */
   if (allowed_cost > 1)
     {
-#if SPARC || POWER || M88000 || AM29K
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K
       /* d = 0x80000000
 	 sparc:		sethi	%hi(0x80000000),d
 	 rs6000:	liu	d,0x8000
@@ -897,7 +897,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_COPY(v, co, VALUE_MIN_SIGNED, ci);
       RECURSE(COPY, CNST_0x80000000, 0, prune_hint & ~CY_JUST_SET);
 #endif
-#if SPARC || POWER || M88000 || AM29K || ALPHA
+#if SO_SPARC || SO_POWER || SO_M88000 || SO_AM29K || SO_ALPHA
       /* d = -1
 	 sparc:		mov	-1,d
 	 rs6000:	lil	d,-1
@@ -915,7 +915,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_COPY(v, co, VALUE(1), ci);
       RECURSE(COPY, CNST(1), 0, prune_hint & ~CY_JUST_SET);
 #endif
-#if POWER || AM29K || ALPHA	/* Sparc and 88k should not need this.
+#if SO_POWER || SO_AM29K || SO_ALPHA	/* SO_Sparc and 88k should not need this.
 				   Alpha can use it because of cmov.  */
       /* d = 0
 	 rs6000:	lil	d,0
@@ -924,7 +924,7 @@ MAKENAME(synth) (insn_t *sequence,
       PERFORM_COPY(v, co, VALUE(0), ci);
       RECURSE(COPY, CNST(0), 0, prune_hint & ~CY_JUST_SET);
 #endif
-#if M88000
+#if SO_M88000
       /* d = 0x7fffffff
 	 m88000:	set	d,r0,31<0> */
       PERFORM_COPY(v, co, VALUE_MAX_SIGNED, ci);
@@ -938,7 +938,7 @@ MAKENAME(synth) (insn_t *sequence,
 }
 #endif
 
-#if HPPA
+#if SO_HPPA
 /* Missing insns:
    * IOR,imm,s1,d using depi
    * addil,0x80000000,s2,d for complementing msb
@@ -970,7 +970,7 @@ MAKENAME(synth) (insn_t *sequence,
   MAKENAME (synth_nonskip) (sequence, n_insns, values, n_values, goal_value,
 			    allowed_cost, ci, prune_hint, nullify_flag_in);
 
-#if !MAKE_LEAF
+#if !SO_MAKE_LEAF
   /* SECONDLY EVERYTHING WITH CONDITIONAL SKIP.  */
   /* Don't skip if end of sequence...! */
   if (allowed_cost > 1)
@@ -1372,7 +1372,7 @@ MAKENAME(synth_nonskip) (insn_t *sequence,
     }
 }
 
-#if !MAKE_LEAF
+#if !SO_MAKE_LEAF
 void
 synth_condskip (insn_t *sequence,
 		int n_insns,
@@ -1778,7 +1778,7 @@ synth_condskip (insn_t *sequence,
 	      if (!nullify_flag_in) PERFORM_COMCLR_SGTU(v, co, nullify_flag, r1, r2, ci);
 	      else PERFORM_NULLIFIED(v, co, nullify_flag, ci);
 	      PA_RECURSE(COMCLR_SGTU, dr, s1, s2, (prune_hint & ~CY_JUST_SET) | NULLIFYING_INSN, nullify_flag);
-#if LATER
+#if SO_LATER
 	      /* Do we need both commutations here??? */
 	      /* hppa:	comclr,sv */
 	      if (!nullify_flag_in) PERFORM_COMCLR_SOVS(v, co, nullify_flag, r1, r2, ci);
@@ -2220,7 +2220,7 @@ synth_condskip (insn_t *sequence,
 	  PA_RECURSE(COMCLR_SGEU, dr, CNST(1), s1, (prune_hint & ~CY_JUST_SET) | NULLIFYING_INSN, nullify_flag);
 	  /* hppa:	comclr,<<= 1,r,d == comclr,<< 0,r,d */
 	  /* hppa:	comclr,>> 1,r,d == comclr,>>= 0,r,d */
-#if LATER
+#if SO_LATER
 	  /* Do we need both commutations here??? */
 	  /* hppa:	comclr,sv */
 	  if (!nullify_flag_in) PERFORM_COMCLR_SOVS(v, co, nullify_flag, VALUE(0), r1, ci);
@@ -2554,7 +2554,7 @@ synth_skip (insn_t *sequence,
 #endif /* !MAKE_LEAF */
 #endif /* HPPA */
 
-#if M68000 || I386 || PYR || SH
+#if SO_M68000 || SO_I386 || SO_PYR || SO_SH
 void
 MAKENAME (synth) (insn_t *sequence,
 		  int n_insns,
@@ -2581,7 +2581,7 @@ MAKENAME (synth) (insn_t *sequence,
 
   /* Binary operations with carry-in.  */
   if (ci >= 0
-#if !SH /* We have to clear carry for addc, subc, and negc */
+#if !SO_SH /* SO_We have to clear carry for addc, subc, and negc */
       && (prune_hint & CY_0) == 0
 #endif
       && flag_use_carry)
@@ -2605,7 +2605,7 @@ MAKENAME (synth) (insn_t *sequence,
 		    continue;
 		}
 
-#if M68000 || I386 || PYR || SH
+#if SO_M68000 || SO_I386 || SO_PYR || SO_SH
 	      /* m68000:	addx
 		 i80386:	adc
 		 pyramid:	addwc
@@ -2613,7 +2613,7 @@ MAKENAME (synth) (insn_t *sequence,
 	      PERFORM_ADD_CIO(v, co, r1, r2, ci);
 	      CRECURSE_2OP(ADD_CIO, s1, s1, s2, 1, CY_JUST_SET);
 #endif
-#if M68000 || I386 || SH
+#if SO_M68000 || SO_I386 || SO_SH
 	      if (s1 != s2)
 		{
 		  /* m68000:	subx
@@ -2623,7 +2623,7 @@ MAKENAME (synth) (insn_t *sequence,
 		  CRECURSE_2OP(SUB_CIO, s1, s1, s2, 1, CY_JUST_SET);
 		}
 #endif
-#if PYR
+#if SO_PYR
 	      if (s1 != s2)
 		{
 		  /* pyramid:	subwb */
@@ -2653,12 +2653,12 @@ MAKENAME (synth) (insn_t *sequence,
 		continue;
 	    }
 
-#if SH
+#if SO_SH
 	  /* sh:	add */
 	  PERFORM_ADD(v, co, r1, r2, ci);
 	  CRECURSE_2OP(ADD, s1, s1, s2, 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000 || I386 || PYR
+#if SO_M68000 || SO_I386 || SO_PYR
 	  /* m68000:	add
 	     i80386:	add
 	     pyramid:	addw */
@@ -2667,23 +2667,23 @@ MAKENAME (synth) (insn_t *sequence,
 #endif
 	  if (s1 != s2)
 	    {
-#if SH
+#if SO_SH
 	  /* sh:	sub */
 	  PERFORM_SUB(v, co, r1, r2, ci);
 	  CRECURSE_2OP(SUB, s1, s1, s2, 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000 || I386
+#if SO_M68000 || SO_I386
 	      /* m68000:	sub
 		 i80386:	sub */
 	      PERFORM_SUB_CO(v, co, r1, r2, ci);
 	      CRECURSE_2OP(SUB_CO, s1, s1, s2, 1, CY_JUST_SET);
 #endif
-#if PYR
+#if SO_PYR
 	      /* pyramid:	subw */
 	      PERFORM_ADC_CO(v, co, r1, r2, ci);
 	      CRECURSE_2OP(ADC_CO, s1, s1, s2, 1, CY_JUST_SET);
 #endif
-#if M68000 || SH
+#if SO_M68000 || SO_SH
 	      PERFORM_AND(v, co, r1, r2, ci);
 	      CRECURSE_2OP(AND, s1, s1, s2, 1, prune_hint & ~CY_JUST_SET);
 
@@ -2693,7 +2693,7 @@ MAKENAME (synth) (insn_t *sequence,
 	      PERFORM_XOR(v, co, r1, r2, ci);
 	      CRECURSE_2OP(XOR, s1, s1, s2, 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if I386
+#if SO_I386
 	      PERFORM_AND_RC(v, co, r1, r2, ci);
 	      CRECURSE_2OP(AND_RC, s1, s1, s2, 1, CY_JUST_SET | CY_0);
 
@@ -2703,7 +2703,7 @@ MAKENAME (synth) (insn_t *sequence,
 	      PERFORM_XOR_RC(v, co, r1, r2, ci);
 	      CRECURSE_2OP(XOR_RC, s1, s1, s2, 1, CY_JUST_SET | CY_0);
 #endif
-#if PYR
+#if SO_PYR
 	      PERFORM_AND_CC(v, co, r1, r2, ci);
 	      CRECURSE_2OP(AND_CC, s1, s1, s2, 1, 0);
 
@@ -2716,13 +2716,13 @@ MAKENAME (synth) (insn_t *sequence,
 	      PERFORM_XOR_CC(v, co, r1, r2, ci);
 	      CRECURSE_2OP(XOR_CC, s1, s1, s2, 1, 0);
 #endif
-#if I386
+#if SO_I386
 	      PERFORM_CMP(v, co, r1, r2, ci);
 	      /* kludge: lie that the result is written to
 		 register <n_values>. */
 	      CRECURSE_2OP(CMP, n_values, s1, s2, 1, CY_JUST_SET);
 #endif
-#if SH
+#if SO_SH
 	      /* kludge: lie that the result is written to
 		 register <n_values>. */
 	      PERFORM_CYGTU(v, co, r1, r2, ci);
@@ -2748,7 +2748,7 @@ MAKENAME (synth) (insn_t *sequence,
 	      CRECURSE_2OP(MERGE16, s1, s1, s2, 1, prune_hint & ~CY_JUST_SET);
 #endif
 	    }
-#if M68000 || I386 || PYR
+#if SO_M68000 || SO_I386 || SO_PYR
 	  /* Exchange registers.  An ugly kludge.  */
 	  if (s1 < s2)
 	    {
@@ -2765,7 +2765,7 @@ MAKENAME (synth) (insn_t *sequence,
 
   /* Unary operations with carry-in.  */
   if (ci >= 0
-#if !SH /* We have to clear carry for addc, subc, and negc */
+#if !SO_SH /* SO_We have to clear carry for addc, subc, and negc */
       && (prune_hint & CY_0) == 0
 #endif
       && flag_use_carry)
@@ -2785,80 +2785,80 @@ MAKENAME (synth) (insn_t *sequence,
 		continue;
 	    }
 
-#if I386 || PYR
+#if SO_I386 || SO_PYR
 	  /* d,cy = r1 + 1 + cy
 	     i80386:	adc	1,d
 	     pyramid:	addwc	$1,d */
 	  PERFORM_ADD_CIO(v, co, r1, VALUE(1), ci);
 	  CRECURSE_2OP(ADD_CIO, s1, s1, CNST(1), 1, CY_JUST_SET);
 #endif
-#if I386
+#if SO_I386
 	  /* d,cy = r1 - 1 - cy
 	     i80386:	sbb	1,d */
 	  PERFORM_SUB_CIO(v, co, r1, VALUE(1), ci);
 	  CRECURSE_2OP(SUB_CIO, s1, s1, CNST(1), 1, CY_JUST_SET);
 #endif
-#if PYR
+#if SO_PYR
 	  /* d,cy = r1 + (-2) + cy
 	     pyramid:	subwb	$1,d */
 	  PERFORM_ADC_CIO(v, co, r1, VALUE(1), ci);
 	  CRECURSE_2OP(ADC_CIO, s1, s1, CNST(1), 1, CY_JUST_SET);
 #endif
-#if I386 || PYR
+#if SO_I386 || SO_PYR
 	  /* d,cy = r1 + (-1) + cy
 	     i80386:	adc	-1,d
 	     pyramid:	addwc	$-1,d */
 	  PERFORM_ADD_CIO(v, co, r1, VALUE(-1), ci);
 	  CRECURSE_2OP(ADD_CIO, s1, s1, CNST(-1), 1, CY_JUST_SET);
 #endif
-#if I386
+#if SO_I386
 	  /* d,cy = r1 - -1 - cy
 	     i80386:	sbb	-1,d */
 	  PERFORM_SUB_CIO(v, co, r1, VALUE(-1), ci);
 	  CRECURSE_2OP(SUB_CIO, s1, s1, CNST(-1), 1, CY_JUST_SET);
 #endif
-#if PYR
+#if SO_PYR
 	  /* d,cy = r1 + cy	[or if you prefer, r1 + 0 + cy]
 	     pyramid:	subwb	$-1,d */
 	  PERFORM_ADC_CIO(v, co, r1, VALUE(-1), ci);
 	  CRECURSE_2OP(ADC_CIO, s1, s1, CNST(-1), 1, CY_JUST_SET);
 #endif
-#if I386 || PYR
+#if SO_I386 || SO_PYR
 	  /* d,cy = r1 + cy
 	     i80386:	adc	0,d
 	     pyramid:	addwc	$0,d */
 	  PERFORM_ADD_CIO(v, co, r1, VALUE(0), ci);
 	  CRECURSE_2OP(ADD_CIO, s1, s1, CNST(0), 1, CY_JUST_SET);
 #endif
-#if I386
+#if SO_I386
 	  /* d,cy = r1 - cy
 	     i80386:	sbb	0,d */
 	  PERFORM_SUB_CIO(v, co, r1, VALUE(0), ci);
 	  CRECURSE_2OP(SUB_CIO, s1, s1, CNST(0), 1, CY_JUST_SET);
 #endif
-#if PYR
+#if SO_PYR
 	  /* d,cy = r1 + (-1) + cy
 	     pyramid:	subwb	$0,d */
 	  PERFORM_ADC_CIO(v, co, r1, VALUE(0), ci);
 	  CRECURSE_2OP(ADC_CIO, s1, s1, CNST(0), 1, CY_JUST_SET);
 #endif
-#if M68000
+#if SO_M68000
 	  /* d,cy = 0 - r1 - cy
 	     m68000:	negx	d */
 	  PERFORM_SUB_CIO(v, co, VALUE(0), r1, ci);
 	  CRECURSE_2OP(SUB_CIO, s1, CNST(0), s1, 1, CY_JUST_SET);
 #endif
-#if SH
+#if SO_SH
 	  /* d,cy = 0 - r1 - cy
 	     sh:	negc	s1,d */
 	  PERFORM_SUB_CIO(v, co, VALUE(0), r1, ci);
 	  CRECURSE_NEW(SUB_CIO, n_values, CNST(0), s1, 1, CY_JUST_SET);
 #endif
-#if (M68000 || I386 || SH) && 0		/* same effect as ADD_CIO d,d */
+#if (SO_M68000 || SO_I386 || SO_SH) && 0		/* same effect as SO_ADD_CIO d,d */
 	  PERFORM_ROTATEXL_CIO(v, co, r1, VALUE(1), ci);
 	  CRECURSE_2OP(ROTATEXL_CIO, s1, s1, CNST(1), SHIFT_COST(1), CY_JUST_SET);
 #endif
-#if M68000 || I386 || SH
+#if SO_M68000 || SO_I386 || SO_SH
 	  PERFORM_ROTATEXR_CIO(v, co, r1, VALUE(1), ci);
 	  CRECURSE_2OP(ROTATEXR_CIO, s1, s1, CNST(1), SHIFT_COST(1), CY_JUST_SET);
 #endif
@@ -2883,7 +2883,7 @@ MAKENAME (synth) (insn_t *sequence,
 	{
 	  /* Certain instructions should not terminate a sequence.  So we
 	     only generate them in non-leaf nodes.  */
-#if M68000 || I386 || PYR || SH
+#if SO_M68000 || SO_I386 || SO_PYR || SO_SH
 	  /* d = r1
 	     m68000:	move	s1,d
 	     i80386:	move	s1,d
@@ -2892,7 +2892,7 @@ MAKENAME (synth) (insn_t *sequence,
 	  PERFORM_COPY(v, co, r1, ci);
 	  CRECURSE_NEW(COPY, n_values, s1, CNST(0), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if I386
+#if SO_I386
 	  /* cmp kludge: lie that the result is written to register
 	     <n_values>. */
 
@@ -2912,7 +2912,7 @@ MAKENAME (synth) (insn_t *sequence,
 	  PERFORM_CMP(v, co, r1, VALUE_MIN_SIGNED, ci);
 	  CRECURSE_2OP(CMP, n_values, s1, CNST_0x80000000, 2, CY_JUST_SET);
 #endif
-#if SH
+#if SO_SH
 	  /* kludge: lie that the result is written to register <n_values>. */
 	  PERFORM_CYGTS(v, co, r1, VALUE(0), ci);
 	  CRECURSE_2OP(CYGTS, n_values, s1, CNST(0), 1, CY_JUST_SET);
@@ -2923,7 +2923,7 @@ MAKENAME (synth) (insn_t *sequence,
 #endif
 	}
 
-#if I386 || PYR
+#if SO_I386 || SO_PYR
       {
 	int cnt;
 	for (cnt = 1; cnt < BITS_PER_WORD; cnt += (flag_shifts ? 1 : BITS_PER_WORD - 2))
@@ -2937,7 +2937,7 @@ MAKENAME (synth) (insn_t *sequence,
 	    PERFORM_SHIFTL_CO(v, co, r1, VALUE(cnt), ci);
 	    CRECURSE_2OP(SHIFTL_CO, s1, s1, CNST(cnt), SHIFT_COST(cnt), CY_JUST_SET);
 
-#if !PYR   /* Pyramids's rotlw and rotrw clobber cy */
+#if !SO_PYR   /* SO_Pyramids's rotlw and rotrw clobber cy */
 	    PERFORM_ROTATER_CO(v, co, r1, VALUE(cnt), ci);
 	    CRECURSE_2OP(ROTATER_CO, s1, s1, CNST(cnt), SHIFT_COST(cnt), CY_JUST_SET);
 
@@ -2947,7 +2947,7 @@ MAKENAME (synth) (insn_t *sequence,
 	  }
       }
 #endif
-#if MC68020			/* don't do this for plain 68000 */
+#if SO_MC68020			/* don't do this for plain 68000 */
       {
 	int cnt;
 	for (cnt = 1; cnt <= 8; cnt += (flag_shifts ? 1 : BITS_PER_WORD - 2))
@@ -2969,7 +2969,7 @@ MAKENAME (synth) (insn_t *sequence,
 	  }
       }
 #endif
-#if (M68000 && !MC68020) || SH
+#if (SO_M68000 && !SO_MC68020) || SO_SH
       PERFORM_LSHIFTR_CO(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(LSHIFTR_CO, s1, s1, CNST(1), SHIFT_COST(1), CY_JUST_SET);
 
@@ -2985,7 +2985,7 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_ROTATER_CO(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(ROTATER_CO, s1, s1, CNST(1), SHIFT_COST(1), CY_JUST_SET);
 #endif
-#if SH
+#if SO_SH
       PERFORM_LSHIFTR(v, co, r1, VALUE(2), ci);
       CRECURSE_2OP(LSHIFTR, s1, s1, CNST(2), SHIFT_COST(2), prune_hint & ~CY_JUST_SET);
 
@@ -3007,13 +3007,13 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_ROTATEL(v, co, r1, VALUE(16), ci);
       CRECURSE_NEW(ROTATEL, n_values, s1, CNST(16), SHIFT_COST(16), prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000 || SH
+#if SO_M68000 || SO_SH
       /* m68000:	andw	#1,d
          sh:		and	#1,d */
       PERFORM_AND(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(AND, s1, s1, CNST(1), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if SH
+#if SO_SH
       /* sh:		extu.w	s1,d */
       PERFORM_AND(v, co, r1, VALUE(0xFFFF), ci);
       CRECURSE_NEW(AND, n_values, s1, CNST_0xFFFF, 1, prune_hint & ~CY_JUST_SET);
@@ -3027,25 +3027,25 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_EXTS8(v, co, r1, VALUE(0), ci);
       CRECURSE_NEW(EXTS8, n_values, s1, CNST(0), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000
+#if SO_M68000
       PERFORM_AND(v, co, r1, VALUE_MIN_SIGNED, ci);
       CRECURSE_2OP(AND, s1, s1, CNST_0x80000000, 2, prune_hint & ~CY_JUST_SET);
 
       PERFORM_IOR(v, co, r1, VALUE_MIN_SIGNED, ci);
       CRECURSE_2OP(IOR, s1, s1, CNST_0x80000000, 2, prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000 || SH
+#if SO_M68000 || SO_SH
       /* d = r1 ^ 1
 	 m68000:	eorw	#1,d
 	 sh:		xor	#1,d */
       PERFORM_XOR(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(XOR, s1, s1, CNST(1), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000
+#if SO_M68000
       PERFORM_XOR(v, co, r1, VALUE_MIN_SIGNED, ci);
       CRECURSE_2OP(XOR, s1, s1, CNST_0x80000000, 2, prune_hint & ~CY_JUST_SET);
 #endif
-#if I386
+#if SO_I386
       /* i80386:	andb	$1,d */
       PERFORM_AND_RC(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(AND_RC, s1, s1, CNST(1), 1, CY_JUST_SET | CY_0);
@@ -3062,7 +3062,7 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_XOR_RC(v, co, r1, VALUE_MIN_SIGNED, ci);
       CRECURSE_2OP(XOR_RC, s1, s1, CNST_0x80000000, 2, CY_JUST_SET | CY_0);
 #endif
-#if PYR
+#if SO_PYR
       PERFORM_AND_CC(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(AND_CC, s1, s1, CNST(1), 1, 0);
 
@@ -3080,51 +3080,51 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_XOR_CC(v, co, r1, VALUE_MIN_SIGNED, ci);
       CRECURSE_2OP(XOR_CC, s1, s1, CNST_0x80000000, 2, 0);
 #endif
-#if M68000 || I386
+#if SO_M68000 || SO_I386
       /* d = ~r1
 	 m68000:	not	d
 	 i80386:	not	d */
       PERFORM_SUB(v, co, VALUE(-1), r1, ci);
       CRECURSE_2OP(SUB, s1, CNST(-1), s1, 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if SH
+#if SO_SH
       /* d = ~r1
 	 sh:		not	s1,d */
       PERFORM_SUB(v, co, VALUE(-1), r1, ci);
       CRECURSE_NEW(SUB, n_values, CNST(-1), s1, 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if PYR
+#if SO_PYR
       /* d = ~r1
 	 pyramid:	mcomw	s1,d */
       /* We need a new insn: SUB_CC, for Subtract and Clobber Carry.  */
 #endif
-#if I386 || SH
+#if SO_I386 || SO_SH
       /* d = r1 + 1
 	 i80386:	inc	d
 	 sh:		add	#1,d */
       PERFORM_ADD(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(ADD, s1, s1, CNST(1), 2, prune_hint & ~CY_JUST_SET);
 #endif
-#if PYR
+#if SO_PYR
       /* d = r1 + 1
 	 pyramid:	mova	1(s1),d */
       PERFORM_ADD(v, co, r1, VALUE(1), ci);
       RECURSE(ADD, s1, CNST(1), prune_hint & ~CY_JUST_SET);
 #endif
-#if I386 || SH
+#if SO_I386 || SO_SH
       /* d = r1 - 1
 	 i80386:	dec	d
 	 sh:		add	#-1,d */
       PERFORM_ADD(v, co, r1, VALUE(-1), ci);
       CRECURSE_2OP(ADD, s1, s1, CNST(-1), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if PYR
+#if SO_PYR
       /* d = r1 - 1
 	 pyramid:	mova	-1(s1),d */
       PERFORM_ADD(v, co, r1, VALUE(-1), ci);
       RECURSE(ADD, s1, CNST(-1), prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000 || I386 || PYR
+#if SO_M68000 || SO_I386 || SO_PYR
       /* d,cy = r1 + 1
 	 m68000:	addq	1,d
 	 i80386:	add	1,d [short immediate form]
@@ -3132,68 +3132,68 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_ADD_CO(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(ADD_CO, s1, s1, CNST(1), 1, CY_JUST_SET);
 #endif
-#if M68000 || I386
+#if SO_M68000 || SO_I386
       /* d,cy = r1 - 1
 	 m68000:	subq	1,d
 	 i80386:	sub	1,d [short immediate form] */
       PERFORM_SUB_CO(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(SUB_CO, s1, s1, CNST(1), 1, CY_JUST_SET);
 #endif
-#if PYR && 0			/* same effect as addw $-1,d */
+#if SO_PYR && 0			/* same effect as addw $-1,d */
       /* d,cy = r1 + (-1)
 	 pyramid:	subw	1,d */
       PERFORM_ADC_CO(v, co, r1, VALUE(1), ci);
       CRECURSE_2OP(ADC_CO, s1, s1, CNST(1), 1, CY_JUST_SET);
 #endif
-#if M68000
+#if SO_M68000
       /* d,cy = r1 + (-1)
 	 m68000:	add	-1,d */
       PERFORM_ADD_CO(v, co, r1, VALUE(-1), ci);
       CRECURSE_2OP(ADD_CO, s1, s1, CNST(-1), 2, CY_JUST_SET);
 #endif
-#if I386 || PYR
+#if SO_I386 || SO_PYR
       /* d,cy = r1 + (-1)
 	 i80386:	add	-1,d
 	 pyramid:	addw	$-1,d */
       PERFORM_ADD_CO(v, co, r1, VALUE(-1), ci);
       CRECURSE_2OP(ADD_CO, s1, s1, CNST(-1), 1, CY_JUST_SET);
 #endif
-#if M68000
+#if SO_M68000
       /* d,cy = r1 - (-1)
 	 m68000:	sub	-1,d */
       PERFORM_SUB_CO(v, co, r1, VALUE(-1), ci);
       CRECURSE_2OP(SUB_CO, s1, s1, CNST(-1), 2, CY_JUST_SET);
 #endif
-#if I386
+#if SO_I386
       /* d,cy = r1 - (-1)
 	 i80386:	sub	-1,d */
       PERFORM_SUB_CO(v, co, r1, VALUE(-1), ci);
       CRECURSE_2OP(SUB_CO, s1, s1, CNST(-1), 1, CY_JUST_SET);
 #endif
-#if M68000 || I386
+#if SO_M68000 || SO_I386
       /* d,cy = -r1
 	 m68000:	neg	d
 	 i80386:	neg	d */
       PERFORM_SUB_CO(v, co, VALUE(0), r1, ci);
       CRECURSE_2OP(SUB_CO, s1, CNST(0), s1, 1, CY_JUST_SET);
 #endif
-#if SH
+#if SO_SH
       /* d = 0 - r1 - cy
 	 sh:		neg	d */
       PERFORM_SUB(v, co, VALUE(0), r1, ci);
       CRECURSE_NEW(SUB, n_values, CNST(0), s1, 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if PYR
+#if SO_PYR
       /* d,cy = 0 + (-r1)
 	 pyramid:	rsubw	$0,d */
       PERFORM_ADC_CO(v, co, VALUE(0), r1, ci);
       CRECURSE_2OP(ADC_CO, s1, CNST(0), s1, 1, CY_JUST_SET);
 #endif
-#if I386
+#if SO_I386
       PERFORM_BSF86(v, co, r1, ci);
       CRECURSE_NEW(BSF86, n_values, s1, CNST(0), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if SH
+#if SO_SH
       /* Avoid silly sequences...  */
       if (allowed_cost > 1)
 	{
@@ -3203,7 +3203,7 @@ MAKENAME (synth) (insn_t *sequence,
 #endif
     }
 
-#if MC68020			/* don't do this for plain 68000 */
+#if SO_MC68020			/* don't do this for plain 68000 */
   /* kludge for immediate shift on 68k */
   if (last_dest >= 0 && last_dest == n_values - 1
       && values[last_dest] > 8		/* bogus, should use VALUE(..) */
@@ -3234,19 +3234,19 @@ MAKENAME (synth) (insn_t *sequence,
 
   /* Instructions that write to a new register and just depend on carry.  */
   if (ci >= 0
-#if !SH /* We have to clear carry for addc, subc, and negc */
+#if !SO_SH /* SO_We have to clear carry for addc, subc, and negc */
       && (prune_hint & CY_0) == 0
 #endif
       && flag_use_carry
       && (allowed_cost <= 1 ? ((prune_hint & CY_JUST_SET) != 0) : 1))
     {
-#if SH
+#if SO_SH
       /* d = cy, cy = cy
 	 sh:		movt	d */
       PERFORM_ADD_CI(v, co, VALUE(0), VALUE(0), ci);
       CRECURSE_NEW(ADD_CI, n_values, CNST(0), CNST(0), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000 || I386 || SH
+#if SO_M68000 || SO_I386 || SO_SH
       /* d = -cy, cy = cy
 	 m68000:	subx	d,d
 	 i80386:	sbb	d,d
@@ -3254,13 +3254,13 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_SUB_CIO(v, co, VALUE(0), VALUE(0), ci);
       CRECURSE_NEW(SUB_CIO, n_values, n_values, n_values, 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if PYR
+#if SO_PYR
       /* d = -1 + cy, cy = cy
 	 pyramid:	subwb	d,d */
       PERFORM_ADC_CIO(v, co, VALUE(0), VALUE(0), ci);
       CRECURSE_NEW(ADC_CIO, n_values, n_values, n_values, 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if I386 /* slow on m68000 */
+#if SO_I386 /* slow on m68000 */
 /* ??? make new section for this, and conditionalize it on allowed_cost > 1 ??? */
       /* i80386:	cmc */
       co = ci ^ 1;
@@ -3272,7 +3272,7 @@ MAKENAME (synth) (insn_t *sequence,
      Don't do this if we are just permitted to do one more instruction.  */
   if (allowed_cost > 1)
     {
-#if M68000 || I386 || PYR || SH
+#if SO_M68000 || SO_I386 || SO_PYR || SO_SH
       /* d = 0
 	 m68000:	moveq	0,d
 	 i80386:	movl	$0,d
@@ -3281,26 +3281,26 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_COPY(v, co, VALUE(0), ci);
       CRECURSE_NEW(COPY, n_values, CNST(0), CNST(0), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000 || I386
+#if SO_M68000 || SO_I386
       /* d = 0, cy = 0
 	 m68000:	sub	d,d
 	 i80386:	sub	d,d */
       PERFORM_SUB_CO(v, co, r1, r1, ci);
       CRECURSE_NEW(SUB_CO, n_values, n_values, n_values, 1, CY_JUST_SET | CY_0);
 #endif
-#if PYR
+#if SO_PYR
       /* d = 0, cy = 0
 	 pyramid:	subw	d,d */
       PERFORM_ADC_CO(v, co, r1, r1, ci);
       CRECURSE_NEW(ADC_CO, n_values, n_values, n_values, 1, CY_JUST_SET | CY_0);
 #endif
-#if MC68020		/* used for shifting, don't do this for plain 68000 */
+#if SO_MC68020		/* used for shifting, don't do this for plain 68000 */
       /* d = 31
 	 m68000:	moveq	31,d */
       PERFORM_COPY(v, co, VALUE(BITS_PER_WORD-1), ci);
       CRECURSE_NEW(COPY, n_values, CNST(BITS_PER_WORD-1), CNST(0), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if MC68020		/* used for shifting, don't do this for plain 68000 */
+#if SO_MC68020		/* used for shifting, don't do this for plain 68000 */
       if (flag_shifts)
 	{
 	  int cnt;
@@ -3313,7 +3313,7 @@ MAKENAME (synth) (insn_t *sequence,
 	    }
 	}
 #endif
-#if M68000 || PYR || SH
+#if SO_M68000 || SO_PYR || SO_SH
       /* d = 1
 	 m68000:	moveq	1,d
 	 pyramid:	movw	$1,d
@@ -3327,7 +3327,7 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_COPY(v, co, VALUE(-1), ci);
       CRECURSE_NEW(COPY, n_values, CNST(-1), CNST(0), 1, prune_hint & ~CY_JUST_SET);
 #endif
-#if M68000 || I386 || PYR	/* these cost 2 cost units */
+#if SO_M68000 || SO_I386 || SO_PYR	/* these cost 2 cost units */
       /* d = 0x80000000 */
       PERFORM_COPY(v, co, VALUE_MIN_SIGNED, ci);
       CRECURSE_NEW(COPY, n_values, CNST_0x80000000, CNST(0), 2, prune_hint & ~CY_JUST_SET);
@@ -3336,7 +3336,7 @@ MAKENAME (synth) (insn_t *sequence,
       PERFORM_COPY(v, co, VALUE_MAX_SIGNED, ci);
       CRECURSE_NEW(COPY, n_values, CNST_0x7FFFFFFF, CNST(0), 2, prune_hint & ~CY_JUST_SET);
 #endif
-#if SH
+#if SO_SH
       /* sh:	sett */
       co = 1;
       CRECURSE_2OP(SETCY, n_values, n_values, n_values, 1, CY_JUST_SET | CY_1);
@@ -3351,7 +3351,7 @@ MAKENAME (synth) (insn_t *sequence,
 }
 #endif
 
-#if I960
+#if SO_I960
 /* Missing insns:
  * cmpdeco, cmpinco, cmpdeci and cmpinci.  How are conditions set?  Signed
    or unsigned?
@@ -3457,7 +3457,7 @@ concmpo		1	c--	ccc
 	      RECURSE(SUBC_960, s1, s2, CY_JUST_SET);
 	      PERFORM_SUBC_960(v, co, r2, r1, ci);
 	      RECURSE(SUBC_960, s2, s1, CY_JUST_SET);
-#if I960B
+#if SO_I960B
 	      /* i960:		selCC r1,r2,d */
 	      PERFORM_SEL_NO_960(v, co, r1, r2, ci);
 	      RECURSE(SEL_NO_960, s1, s2, prune_hint & ~CY_JUST_SET);
@@ -3492,7 +3492,7 @@ concmpo		1	c--	ccc
 	}
     }
 
-#if I960B
+#if SO_I960B
   /* Binary conditionally executed operations with carry-in.  */
   if (ci >= 0 && flag_use_carry)
     {
@@ -3718,7 +3718,7 @@ concmpo		1	c--	ccc
 	     i960:	subc	s1,0,d */
 	  PERFORM_SUBC_960(v, co, VALUE(0), r1, ci);
 	  RECURSE(SUBC_960, CNST(0), s1, CY_JUST_SET);
-#if I960B
+#if SO_I960B
 	  /* i960:		selCC r1,0,d */
 	  PERFORM_SEL_NO_960(v, co, r1, VALUE(0), ci);
 	  RECURSE(SEL_NO_960, s1, CNST(0), prune_hint & ~CY_JUST_SET);
@@ -3791,7 +3791,7 @@ concmpo		1	c--	ccc
 	}
     }
 
-#if I960B
+#if SO_I960B
   /* Unary conditionally executed operations with carry-in.  */
   if (ci >= 0 && flag_use_carry)
     {
@@ -4040,7 +4040,7 @@ concmpo		1	c--	ccc
       PERFORM_SUBC_960(v, co, VALUE(0), VALUE(0), ci);
       RECURSE(SUBC_960, CNST(0), CNST(0), prune_hint & ~CY_JUST_SET);
 
-#if I960B
+#if SO_I960B
       /* i960:		selCC 1,0,d */
       PERFORM_SEL_NO_960(v, co, VALUE(1), VALUE(0), ci);
       RECURSE(SEL_NO_960, CNST(1), CNST(0), prune_hint & ~CY_JUST_SET);
