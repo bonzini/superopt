@@ -650,7 +650,7 @@ output_assembly(insn_t insn)
       if (IMMEDIATE_P(s2))
 	{
 	  if (IMMEDIATE_VAL(s2) + 0x4000 < 0x8000)
-	    printf("%s\t%s,%d(%s)",INS_CAL,NAME(d),IMMEDIATE_VAL(s2),NAME(s1));
+	    printf("%s\t%s,%s,%d",INS_CAL,NAME(d),NAME(s1),IMMEDIATE_VAL(s2));
 	  else if ((IMMEDIATE_VAL(s2) & 0xffff) == 0)
 	    printf("%s\t%s,%s,0x%x",INS_CAU,NAME(d),NAME(s1),IMMEDIATE_VAL(s2) >> 16);
 	  else
