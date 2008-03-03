@@ -337,6 +337,11 @@ DEF_GOAL (UDIV,           2, "udiv",        { r = v0 / v1; })
 
 /* After "v0 = v1 + v2", compute if we got signed overflow.  */
 DEF_GOAL (OVERFLOW_AFTER_ADD, 3, "add_ovfl",  { r = (signed_word) (~(v1 ^ v2) & (v0 ^ v1)) < 0; })
+DEF_GOAL (OVERFLOW_AFTER_ADD_NEG, 3, "add_ovfl",  { r = -((signed_word) (~(v1 ^ v2) & (v0 ^ v1)) < 0); })
+
+/* After "(v1, v0) = a * b", compute if we got signed overflow.  */
+DEF_GOAL (OVERFLOW_AFTER_MUL, 2, "mul_ovfl",  { r = (v1 != 0 && (signed_word) v1 != -1) || (signed_word) (v0 ^ v1) < 0; })
+DEF_GOAL (OVERFLOW_AFTER_MUL_NEG, 2, "mul_ovfl_neg",  { r = -((v1 != 0 && (signed_word) v1 != -1) || (signed_word) (v0 ^ v1) < 0); })
 
 /* The most and least significant bits of a double word left shift.  */
 DEF_GOAL (DBL_SHIFT_HI, 3, "dbl_shift_hi",

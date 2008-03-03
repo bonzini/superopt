@@ -1,3 +1,8 @@
+2008-03-03  Paolo Bonzini  <bonzini@gnu.org>
+
+	* superopt.c: Add KNOW_START for i386 mul-overflow.
+	* goal.def: Add mul overflow functions.
+
 Tue Jun 13 12:59:52 2000  Paolo Bonzini  <bonzini@gnu.org>
 
 	* configure.ac: New file, updated configure.in

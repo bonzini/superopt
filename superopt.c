@@ -2710,6 +2710,7 @@ main_synth(int maxmax_cost, int allowed_extra_cost)
     }
 
   ii = 0;
+#define KNOW_START 1
 #if KNOW_START
   switch (goal_function)
     {
@@ -2721,10 +2722,9 @@ main_synth(int maxmax_cost, int allowed_extra_cost)
 #endif
       break;
 
-    case ZDEPI_FOR_MOVSI:
-#if SO_SPARC
-      sequence[ii++] = (insn_t) { SUB, CNST(0), 0, 1 };
-      sequence[ii++] = (insn_t) { AND, 0, 1, 2 };
+    case OVERFLOW_AFTER_MUL:
+#if SO_I386
+      sequence[ii++] = (insn_t) { XOR_RC, 0, 1, 0 };
 #endif
       break;
     default: break;
